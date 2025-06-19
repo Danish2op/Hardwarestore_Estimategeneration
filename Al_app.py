@@ -101,11 +101,11 @@ st.markdown("""
         border-radius: 4px !important;
     }
     
-    /* Main content dropdown options - black text on white background */
+    /* Main content dropdown options - white text on dark background */
     .main .stSelectbox [role="option"],
     .main .stSelectbox [role="listbox"] div {
-        background-color: #ffffff !important;
-        color: #000000 !important;
+        background-color: #2c3e50 !important;
+        color: #ffffff !important;
     }
     
     /* Selected option in main content - black text on white background */
@@ -134,13 +134,13 @@ st.markdown("""
         color: #ffffff !important;
     }
     
-    /* Sidebar page selection dropdown - white background */
+    /* Sidebar page selection dropdown - white text */
     section[data-testid="stSidebar"] .stSelectbox > div > div,
     section[data-testid="stSidebar"] .stSelectbox [data-baseweb="select"],
     section[data-testid="stSidebar"] .stSelectbox [data-baseweb="select"] > div,
     section[data-testid="stSidebar"] .stSelectbox [role="option"] {
-        background-color: #ffffff !important;
-        color: #000000 !important;
+        background-color: #2c3e50 !important;
+        color: #ffffff !important;
     }
     
     /* Selected page option - black text on white background */
