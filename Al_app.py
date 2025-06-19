@@ -109,7 +109,7 @@ st.markdown("""
     .main [data-baseweb="menu"] div,
     .main [data-baseweb="menu"] [role="option"] {
         background-color: #ffffff !important;
-        color: #000000 !important;
+        color: #ffffff !important;
         border: 1px solid #dee2e6 !important;
     }
     
