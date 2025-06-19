@@ -102,14 +102,14 @@ st.markdown("""
     }
     
 
-    /* Main content dropdown options - black text on white background */
+/* Main content dropdown options - black text on white background */
     .main .stSelectbox [role="option"],
     .main .stSelectbox [role="listbox"] div,
     .main .stSelectbox [role="listbox"],
     .main [data-baseweb="menu"] div,
     .main [data-baseweb="menu"] [role="option"] {
         background-color: #ffffff !important;
-        color: #ffffff !important;
+        color: #000000 !important;
         border: 1px solid #dee2e6 !important;
     }
     
