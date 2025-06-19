@@ -96,13 +96,20 @@ st.markdown("""
     input[type="text"], input[type="number"], textarea, select {
         background-color: #ffffff !important;
         color: #000000 !important;
+        caret-color: #000000 !important;
         border: 1px solid #dee2e6 !important;
         border-radius: 4px !important;
     }
     
-    /* Dropdown options */
-    .stSelectbox [role="option"],
-    .stSelectbox [role="listbox"] div {
+    /* Main content dropdown options - white text on dark background */
+    .main .stSelectbox [role="option"],
+    .main .stSelectbox [role="listbox"] div {
+        background-color: #2c3e50 !important;
+        color: #ffffff !important;
+    }
+    
+    /* Selected option in main content - black text on white background */
+    .main .stSelectbox [aria-selected="true"] {
         background-color: #ffffff !important;
         color: #000000 !important;
     }
@@ -127,12 +134,27 @@ st.markdown("""
         color: #ffffff !important;
     }
     
-    /* Sidebar inputs */
+    /* Sidebar page selection dropdown - white text */
     section[data-testid="stSidebar"] .stSelectbox > div > div,
+    section[data-testid="stSidebar"] .stSelectbox [data-baseweb="select"],
+    section[data-testid="stSidebar"] .stSelectbox [data-baseweb="select"] > div,
+    section[data-testid="stSidebar"] .stSelectbox [role="option"] {
+        background-color: #2c3e50 !important;
+        color: #ffffff !important;
+    }
+    
+    /* Selected page option - black text on white background */
+    section[data-testid="stSidebar"] .stSelectbox [aria-selected="true"] {
+        background-color: #ffffff !important;
+        color: #000000 !important;
+    }
+    
+    /* Sidebar inputs - black text with black cursor */
     section[data-testid="stSidebar"] .stTextInput > div > div > input,
     section[data-testid="stSidebar"] .stNumberInput > div > div > input {
         background-color: #ffffff !important;
         color: #000000 !important;
+        caret-color: #000000 !important;
     }
     
     /* Button styling */
@@ -213,7 +235,7 @@ st.markdown("""
     
     .total-display {
         background: #2c3e50 !important;
-        color: #ffffff !important;
+        color: #000000 !important;
         padding: 1.5rem;
         border-radius: 8px;
         text-align: center;
@@ -223,7 +245,7 @@ st.markdown("""
     
     .total-display *,
     .total-display h1, .total-display p {
-        color: #ffffff !important;
+        color: #000000 !important;
     }
     
     .metric-display {
@@ -344,7 +366,27 @@ st.markdown("""
     .stTextArea textarea {
         background-color: #ffffff !important;
         color: #000000 !important;
+        caret-color: #000000 !important;
         border: 1px solid #dee2e6 !important;
+    }
+    
+    /* Universal input styling - ensure all inputs have black text and visible cursor */
+    input, textarea, select {
+        color: #000000 !important;
+        caret-color: #000000 !important;
+    }
+    
+    /* Specific targeting for all Streamlit input elements */
+    .stTextInput input,
+    .stNumberInput input,
+    .stTextArea textarea,
+    .stSelectbox select,
+    [data-testid="textInput"] input,
+    [data-testid="numberInput"] input,
+    [data-testid="textArea"] textarea {
+        color: #000000 !important;
+        caret-color: #000000 !important;
+        background-color: #ffffff !important;
     }
     
     /* Override any dark theme attempts */
@@ -1208,8 +1250,8 @@ with main_container:
         
         st.markdown(f"""
         <div class="total-display">
-            <h1 style="margin: 0; color: #ffffff;">Final Total: ₹{final_total:,.2f}</h1>
-            <p style="margin: 0.5rem 0 0 0; opacity: 0.9; color: #ffffff;">All amounts in Indian Rupees (INR)</p>
+            <h1 style="margin: 0; color: #000000;">Final Total: ₹{final_total:,.2f}</h1>
+            <p style="margin: 0.5rem 0 0 0; opacity: 0.9; color: #000000;">All amounts in Indian Rupees (INR)</p>
         </div>
         """, unsafe_allow_html=True)
         
