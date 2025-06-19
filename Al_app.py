@@ -101,16 +101,23 @@ st.markdown("""
         border-radius: 4px !important;
     }
     
-    /* Main content dropdown options - white text on dark background */
+
+    /* Main content dropdown options - black text on white background */
     .main .stSelectbox [role="option"],
-    .main .stSelectbox [role="listbox"] div {
-        background-color: #2c3e50 !important;
-        color: #ffffff !important;
+    .main .stSelectbox [role="listbox"] div,
+    .main .stSelectbox [role="listbox"],
+    .main [data-baseweb="menu"] div,
+    .main [data-baseweb="menu"] [role="option"] {
+        background-color: #ffffff !important;
+        color: #000000 !important;
+        border: 1px solid #dee2e6 !important;
     }
     
-    /* Selected option in main content - black text on white background */
-    .main .stSelectbox [aria-selected="true"] {
-        background-color: #ffffff !important;
+    /* Selected/hovered option in main content - light blue background */
+    .main .stSelectbox [aria-selected="true"],
+    .main .stSelectbox [role="option"]:hover,
+    .main [data-baseweb="menu"] [role="option"]:hover {
+        background-color: #e3f2fd !important;
         color: #000000 !important;
     }
     
