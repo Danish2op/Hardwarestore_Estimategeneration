@@ -2,13 +2,21 @@
 primaryColor = "#3498db"
 backgroundColor = "#ffffff"
 secondaryBackgroundColor = "#f8f9fa"
-textColor = "#1a1a1a"
+textColor = "#000000"
 font = "sans serif"
+base = "light"
 
 [server]
 maxUploadSize = 200
 enableCORS = false
 enableXsrfProtection = true
+headless = true
 
 [browser]
 gatherUsageStats = false
+serverAddress = "0.0.0.0"
+
+[client]
+caching = true
+displayEnabled = true
+showErrorDetails = false

@@ -19,7 +19,7 @@ import tempfile
 import os
 import time
 
-# Page configuration
+# Page configuration with light theme forced
 st.set_page_config(
     page_title="Aluminum Profile Estimate Generator",
     page_icon="🏗️",
@@ -27,65 +27,119 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
-# Professional CSS styling with black text fixes
+# Comprehensive CSS styling with deployment-ready visibility fixes
 st.markdown("""
 <style>
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
     
+    /* Force light theme and ensure all text is visible */
+    .stApp {
+        background-color: #ffffff !important;
+        color: #000000 !important;
+    }
+    
     .main {
         font-family: 'Inter', sans-serif;
-        background-color: #f8f9fa;
-    }
-    
-    /* Force black text for all main content */
-    .main .block-container h1,
-    .main .block-container h2, 
-    .main .block-container h3,
-    .main .block-container h4,
-    .main .block-container p,
-    .main .block-container span,
-    .main .block-container div,
-    .main .block-container label,
-    .stSelectbox label,
-    .stTextInput label,
-    .stNumberInput label,
-    .stTextArea label,
-    .stDateInput label {
+        background-color: #f8f9fa !important;
         color: #000000 !important;
     }
     
-    /* Specific fixes for problematic sections */
-    .stMarkdown h2,
-    .stMarkdown h3,
-    .stMarkdown h4 {
+    /* Universal text color enforcement with maximum specificity */
+    .main *,
+    .stApp *,
+    .block-container *,
+    .element-container *,
+    .stMarkdown *,
+    .stSelectbox *,
+    .stTextInput *,
+    .stNumberInput *,
+    .stTextArea *,
+    .stDateInput *,
+    .stButton *,
+    .stColumns *,
+    .stContainer *,
+    div[data-testid="stMarkdownContainer"] *,
+    div[data-testid="column"] *,
+    div[data-testid="stSelectbox"] *,
+    div[data-testid="stTextInput"] *,
+    div[data-testid="stNumberInput"] *,
+    section[data-testid="stSidebar"] * {
+        color: #000000 !important;
+        background-color: transparent !important;
+    }
+    
+    /* Specific targeting for problematic elements */
+    h1, h2, h3, h4, h5, h6,
+    p, span, div, label, strong, em,
+    .stMarkdown h1, .stMarkdown h2, .stMarkdown h3, .stMarkdown h4,
+    .stMarkdown p, .stMarkdown div, .stMarkdown span,
+    .stSelectbox label, .stTextInput label, .stNumberInput label,
+    .stTextArea label, .stDateInput label,
+    [data-testid="stMarkdownContainer"] h1,
+    [data-testid="stMarkdownContainer"] h2,
+    [data-testid="stMarkdownContainer"] h3,
+    [data-testid="stMarkdownContainer"] h4,
+    [data-testid="stMarkdownContainer"] p,
+    [data-testid="stMarkdownContainer"] div,
+    [data-testid="stMarkdownContainer"] span {
+        color: #000000 !important;
+        font-weight: inherit !important;
+    }
+    
+    /* Input and selectbox styling with white background */
+    .stSelectbox > div > div,
+    .stSelectbox [data-baseweb="select"],
+    .stSelectbox [data-baseweb="select"] > div,
+    .stTextInput > div > div > input,
+    .stNumberInput > div > div > input,
+    .stTextArea > div > div > textarea,
+    input[type="text"], input[type="number"], textarea, select {
+        background-color: #ffffff !important;
+        color: #000000 !important;
+        border: 1px solid #dee2e6 !important;
+        border-radius: 4px !important;
+    }
+    
+    /* Dropdown options */
+    .stSelectbox [role="option"],
+    .stSelectbox [role="listbox"] div {
+        background-color: #ffffff !important;
         color: #000000 !important;
     }
     
-    /* Fix selectbox text visibility - make selected text white/visible */
-    .stSelectbox > div > div > div {
+    /* Sidebar styling */
+    .css-1d391kg, .css-1v3fvcr, .css-17eq0hr,
+    section[data-testid="stSidebar"],
+    section[data-testid="stSidebar"] > div {
+        background-color: #2c3e50 !important;
+    }
+    
+    section[data-testid="stSidebar"] * {
+        color: #ffffff !important;
+    }
+    
+    section[data-testid="stSidebar"] .stSelectbox label,
+    section[data-testid="stSidebar"] .stButton label,
+    section[data-testid="stSidebar"] h1,
+    section[data-testid="stSidebar"] h2,
+    section[data-testid="stSidebar"] h3,
+    section[data-testid="stSidebar"] p {
+        color: #ffffff !important;
+    }
+    
+    /* Sidebar inputs */
+    section[data-testid="stSidebar"] .stSelectbox > div > div,
+    section[data-testid="stSidebar"] .stTextInput > div > div > input,
+    section[data-testid="stSidebar"] .stNumberInput > div > div > input {
+        background-color: #ffffff !important;
         color: #000000 !important;
-        background-color: white !important;
     }
     
-    .stSelectbox [data-baseweb="select"] {
-        background-color: white !important;
-    }
-    
-    .stSelectbox [data-baseweb="select"] > div {
-        color: #000000 !important;
-        background-color: white !important;
-    }
-    
-    /* Dropdown options styling */
-    .stSelectbox [role="option"] {
-        color: #000000 !important;
-        background-color: white !important;
-    }
-    
-    /* Ensure all download buttons have consistent styling */
+    /* Button styling */
+    .stButton > button,
     .stDownloadButton > button {
         background: #3498db !important;
-        color: white !important;
+        color: #ffffff !important;
         border: none !important;
         border-radius: 4px !important;
         padding: 0.5rem 1rem !important;
@@ -94,14 +148,16 @@ st.markdown("""
         margin: 0.25rem 0 !important;
     }
     
+    .stButton > button:hover,
     .stDownloadButton > button:hover {
         background: #2980b9 !important;
-        color: white !important;
+        color: #ffffff !important;
     }
     
+    /* Custom styled components */
     .main-header {
-        background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
-        color: white !important;
+        background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%) !important;
+        color: #ffffff !important;
         padding: 2rem;
         border-radius: 8px;
         text-align: center;
@@ -111,11 +167,11 @@ st.markdown("""
     
     .main-header h1,
     .main-header p {
-        color: white !important;
+        color: #ffffff !important;
     }
     
     .section-card {
-        background: white;
+        background: #ffffff !important;
         padding: 1.5rem;
         border-radius: 8px;
         box-shadow: 0 2px 8px rgba(0,0,0,0.1);
@@ -123,39 +179,41 @@ st.markdown("""
         border-left: 4px solid #3498db;
     }
     
+    .section-card *,
+    .section-card h1, .section-card h2, .section-card h3, .section-card h4,
+    .section-card p, .section-card span, .section-card div, .section-card label {
+        color: #000000 !important;
+    }
+    
     .calculation-display {
-        background: #f8f9fa;
+        background: #f8f9fa !important;
         border: 1px solid #dee2e6;
         padding: 1rem;
         border-radius: 6px;
         margin: 1rem 0;
-        color: #000000 !important;
     }
     
-    .calculation-display h4,
-    .calculation-display p,
-    .calculation-display strong {
+    .calculation-display *,
+    .calculation-display h4, .calculation-display p, .calculation-display strong {
         color: #000000 !important;
     }
     
     .client-info-display {
-        background: #e9ecef;
+        background: #e9ecef !important;
         border: 1px solid #ced4da;
         padding: 1rem;
         border-radius: 6px;
         margin: 1rem 0;
-        color: #000000 !important;
     }
     
-    .client-info-display h3,
-    .client-info-display p,
-    .client-info-display strong {
+    .client-info-display *,
+    .client-info-display h3, .client-info-display p, .client-info-display strong {
         color: #000000 !important;
     }
     
     .total-display {
-        background: #2c3e50;
-        color: white !important;
+        background: #2c3e50 !important;
+        color: #ffffff !important;
         padding: 1.5rem;
         border-radius: 8px;
         text-align: center;
@@ -163,28 +221,28 @@ st.markdown("""
         border: 2px solid #34495e;
     }
     
-    .total-display h1,
-    .total-display p {
-        color: white !important;
+    .total-display *,
+    .total-display h1, .total-display p {
+        color: #ffffff !important;
     }
     
     .metric-display {
-        background: white;
+        background: #ffffff !important;
         border: 1px solid #dee2e6;
         padding: 1rem;
         border-radius: 6px;
         text-align: center;
         margin: 0.5rem;
-        color: #000000 !important;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
     }
     
-    .metric-display h3,
-    .metric-display p {
+    .metric-display *,
+    .metric-display h3, .metric-display p {
         color: #000000 !important;
     }
     
     .warning-display {
-        background: #fff3cd;
+        background: #fff3cd !important;
         border: 1px solid #ffeaa7;
         color: #856404 !important;
         padding: 1rem;
@@ -192,13 +250,13 @@ st.markdown("""
         margin: 1rem 0;
     }
     
-    .warning-display h4,
-    .warning-display p {
+    .warning-display *,
+    .warning-display h4, .warning-display p {
         color: #856404 !important;
     }
     
     .success-display {
-        background: #d1ecf1;
+        background: #d1ecf1 !important;
         border: 1px solid #bee5eb;
         color: #0c5460 !important;
         padding: 1rem;
@@ -206,13 +264,13 @@ st.markdown("""
         margin: 1rem 0;
     }
     
-    .success-display h4,
-    .success-display p {
+    .success-display *,
+    .success-display h4, .success-display p {
         color: #0c5460 !important;
     }
     
     .error-display {
-        background: #f8d7da;
+        background: #f8d7da !important;
         border: 1px solid #f5c6cb;
         color: #721c24 !important;
         padding: 1rem;
@@ -220,57 +278,13 @@ st.markdown("""
         margin: 1rem 0;
     }
     
-    .error-display h4,
-    .error-display p {
+    .error-display *,
+    .error-display h4, .error-display p {
         color: #721c24 !important;
     }
     
-    .professional-table {
-        background: white;
-        border-radius: 6px;
-        overflow: hidden;
-        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-    }
-    
-    .sidebar .sidebar-content {
-        background: #2c3e50;
-    }
-    
-    .stButton > button {
-        background: #3498db !important;
-        color: white !important;
-        border: none !important;
-        border-radius: 4px !important;
-        padding: 0.5rem 1rem !important;
-        font-weight: 500 !important;
-        width: 100% !important;
-        margin: 0.25rem 0 !important;
-    }
-    
-    .stButton > button:hover {
-        background: #2980b9 !important;
-        color: white !important;
-    }
-    
-    .email-button {
-        background: #27ae60 !important;
-        color: white !important;
-        border: none !important;
-        border-radius: 4px !important;
-        padding: 0.75rem 1.5rem !important;
-        font-weight: 600 !important;
-        font-size: 1.1rem !important;
-        width: 100% !important;
-        margin: 1rem 0 !important;
-    }
-    
-    .email-button:hover {
-        background: #219a52 !important;
-        color: white !important;
-    }
-    
     .instruction-box {
-        background: #e3f2fd;
+        background: #e3f2fd !important;
         border: 1px solid #90caf9;
         color: #0d47a1 !important;
         padding: 1rem;
@@ -279,24 +293,102 @@ st.markdown("""
         border-left: 4px solid #2196f3;
     }
     
-    .instruction-box h4,
-    .instruction-box p,
-    .instruction-box li {
+    .instruction-box *,
+    .instruction-box h4, .instruction-box p, .instruction-box li {
         color: #0d47a1 !important;
     }
     
     .summary-card {
-        background: #f8f9fa;
+        background: #f8f9fa !important;
         border: 1px solid #dee2e6;
         padding: 1rem;
         border-radius: 6px;
         margin: 1rem 0;
     }
     
-    .summary-card h4,
-    .summary-card p,
-    .summary-card strong {
+    .summary-card *,
+    .summary-card h4, .summary-card p, .summary-card strong {
         color: #000000 !important;
+    }
+    
+    /* Dataframe styling */
+    .stDataFrame {
+        background-color: #ffffff !important;
+    }
+    
+    .stDataFrame table {
+        background-color: #ffffff !important;
+        color: #000000 !important;
+    }
+    
+    .stDataFrame th,
+    .stDataFrame td {
+        background-color: #ffffff !important;
+        color: #000000 !important;
+        border-color: #dee2e6 !important;
+    }
+    
+    /* Metrics */
+    .stMetric {
+        background-color: #ffffff !important;
+        border: 1px solid #dee2e6;
+        padding: 1rem;
+        border-radius: 6px;
+    }
+    
+    .stMetric * {
+        color: #000000 !important;
+    }
+    
+    /* Text areas */
+    .stTextArea textarea {
+        background-color: #ffffff !important;
+        color: #000000 !important;
+        border: 1px solid #dee2e6 !important;
+    }
+    
+    /* Override any dark theme attempts */
+    .stApp[data-theme="dark"] {
+        color-scheme: light !important;
+    }
+    
+    [data-theme="dark"] .main {
+        background-color: #f8f9fa !important;
+    }
+    
+    /* Expander styling */
+    .streamlit-expanderHeader {
+        background-color: #ffffff !important;
+        color: #000000 !important;
+    }
+    
+    .streamlit-expanderContent {
+        background-color: #ffffff !important;
+        color: #000000 !important;
+    }
+    
+    /* Additional failsafe for text visibility */
+    * {
+        text-shadow: none !important;
+    }
+    
+    /* Footer styling */
+    .footer-style {
+        text-align: center;
+        color: #7f8c8d !important;
+        margin: 2rem 0;
+        padding: 1rem;
+        background: #ecf0f1 !important;
+        border-radius: 6px;
+    }
+    
+    .footer-style h4 {
+        margin: 0;
+        color: #2c3e50 !important;
+    }
+    
+    .footer-style p {
+        color: #2c3e50 !important;
     }
 </style>
 """, unsafe_allow_html=True)
@@ -434,7 +526,7 @@ def create_word_document(estimate_data):
     if estimate_data.get('additional_charges', 0) > 0:
         totals_para.add_run(f"Additional Charges: +₹{estimate_data['additional_charges']:.2f}\n")
     
-    # Fixed: Use the correct final_total calculation
+    # Final total calculation
     final_total = estimate_data['subtotal'] - estimate_data.get('discount', 0) + estimate_data.get('additional_charges', 0)
     final_para = doc.add_paragraph()
     final_para.alignment = WD_ALIGN_PARAGRAPH.RIGHT
@@ -554,7 +646,7 @@ st.markdown("""
 
 # Sidebar Navigation
 st.sidebar.markdown("""
-<div style="text-align: center; padding: 1rem; background: #34495e; border-radius: 6px; margin-bottom: 1rem;">
+<div style="text-align: center; padding: 1rem; background: #34495e; border-radius: 6px; margin-bottom: 1rem; color: white;">
     <h3 style="color: white; margin: 0;">Navigation</h3>
 </div>
 """, unsafe_allow_html=True)
@@ -575,7 +667,7 @@ page = st.sidebar.selectbox("Select Page", [
 # Wastage Calculator Sidebar (when enabled)
 if st.session_state.show_wastage_calc:
     with st.sidebar.expander("🧮 Quick Wastage Calculator", expanded=True):
-        st.subheader("Aluminum Profile Wastage")
+        st.markdown('<p style="color: white; font-weight: bold;">Aluminum Profile Wastage</p>', unsafe_allow_html=True)
         
         h = st.number_input("Height (ft)", min_value=0.0, step=0.1, key="sidebar_height")
         w = st.number_input("Width (ft)", min_value=0.0, step=0.1, key="sidebar_width")
@@ -592,9 +684,9 @@ if st.session_state.show_wastage_calc:
             
             st.markdown(f"""
             <div style="background: #f8f9fa; padding: 0.5rem; border-radius: 4px; margin: 0.5rem 0; color: #333;">
-                <small><strong>Required:</strong> {total_req:.2f} ft</small><br>
-                <small><strong>Sticks:</strong> {sticks} pieces</small><br>
-                <small><strong>Wastage:</strong> {wastage:.2f} ft ({wastage_pct:.1f}%)</small>
+                <small style="color: #333;"><strong>Required:</strong> {total_req:.2f} ft</small><br>
+                <small style="color: #333;"><strong>Sticks:</strong> {sticks} pieces</small><br>
+                <small style="color: #333;"><strong>Wastage:</strong> {wastage:.2f} ft ({wastage_pct:.1f}%)</small>
             </div>
             """, unsafe_allow_html=True)
 
@@ -604,7 +696,7 @@ main_container = st.container()
 with main_container:
     if page == "Dashboard":
         st.markdown('<div class="section-card">', unsafe_allow_html=True)
-        st.markdown("## Project Overview")
+        st.markdown('<h2 style="color: #000000 !important;">Project Overview</h2>', unsafe_allow_html=True)
         
         col1, col2, col3, col4 = st.columns(4)
         
@@ -617,7 +709,7 @@ with main_container:
             st.markdown(f"""
             <div class="metric-display">
                 <h3 style="margin: 0; color: #3498db;">📦 {items_count}</h3>
-                <p style="margin: 0;">Items Added</p>
+                <p style="margin: 0; color: #000000;">Items Added</p>
             </div>
             """, unsafe_allow_html=True)
         
@@ -625,7 +717,7 @@ with main_container:
             st.markdown(f"""
             <div class="metric-display">
                 <h3 style="margin: 0; color: #27ae60;">₹{subtotal:,.0f}</h3>
-                <p style="margin: 0;">Current Value</p>
+                <p style="margin: 0; color: #000000;">Current Value</p>
             </div>
             """, unsafe_allow_html=True)
         
@@ -633,7 +725,7 @@ with main_container:
             st.markdown(f"""
             <div class="metric-display">
                 <h3 style="margin: 0; color: #8e44ad;">{client_name[:15]}...</h3>
-                <p style="margin: 0;">Client</p>
+                <p style="margin: 0; color: #000000;">Client</p>
             </div>
             """, unsafe_allow_html=True)
         
@@ -641,25 +733,25 @@ with main_container:
             st.markdown(f"""
             <div class="metric-display">
                 <h3 style="margin: 0; color: #e74c3c;">{estimate_no[-10:]}</h3>
-                <p style="margin: 0;">Estimate ID</p>
+                <p style="margin: 0; color: #000000;">Estimate ID</p>
             </div>
             """, unsafe_allow_html=True)
         
         if st.session_state.estimate_items:
-            st.subheader("Recent Items")
+            st.markdown('<h3 style="color: #000000 !important;">Recent Items</h3>', unsafe_allow_html=True)
             recent_items = st.session_state.estimate_items[-3:]
             for item in recent_items:
                 st.markdown(f"""
                 <div class="calculation-display">
-                    <strong>{item.name}</strong><br>
-                    <span>{item.quantity:.2f} {item.unit} @ ₹{item.rate:.2f} = ₹{item.amount:.2f}</span>
+                    <strong style="color: #000000;">{item.name}</strong><br>
+                    <span style="color: #000000;">{item.quantity:.2f} {item.unit} @ ₹{item.rate:.2f} = ₹{item.amount:.2f}</span>
                 </div>
                 """, unsafe_allow_html=True)
         else:
             st.markdown("""
             <div class="warning-display">
-                <h4>Getting Started</h4>
-                <p>Start by adding products to your estimate. Use the navigation to add client details and products.</p>
+                <h4 style="color: #856404;">Getting Started</h4>
+                <p style="color: #856404;">Start by adding products to your estimate. Use the navigation to add client details and products.</p>
             </div>
             """, unsafe_allow_html=True)
         
@@ -667,12 +759,12 @@ with main_container:
 
     elif page == "Client Details":
         st.markdown('<div class="section-card">', unsafe_allow_html=True)
-        st.markdown("## 👤 Client Information")
+        st.markdown('<h2 style="color: #000000 !important;">👤 Client Information</h2>', unsafe_allow_html=True)
         
         st.markdown("""
         <div class="instruction-box">
-            <h4>💡 Instructions</h4>
-            <p>Client details are optional. Auto-generated ID will be used if not provided. After filling any field, press Enter or Tab to save the input.</p>
+            <h4 style="color: #0d47a1;">💡 Instructions</h4>
+            <p style="color: #0d47a1;">Client details are optional. Auto-generated ID will be used if not provided. After filling any field, press Enter or Tab to save the input.</p>
         </div>
         """, unsafe_allow_html=True)
         
@@ -717,7 +809,7 @@ with main_container:
                 
                 st.markdown("""
                 <div class="success-display">
-                    <h4>✅ Client details saved successfully!</h4>
+                    <h4 style="color: #0c5460;">✅ Client details saved successfully!</h4>
                 </div>
                 """, unsafe_allow_html=True)
         
@@ -735,12 +827,12 @@ with main_container:
 
     elif page == "Add Products":
         st.markdown('<div class="section-card">', unsafe_allow_html=True)
-        st.markdown("## 🛠️ Product & Service Management")
+        st.markdown('<h2 style="color: #000000 !important;">🛠️ Product & Service Management</h2>', unsafe_allow_html=True)
         
         st.markdown("""
         <div class="instruction-box">
-            <h4>📝 How to Add Items</h4>
-            <ul>
+            <h4 style="color: #0d47a1;">📝 How to Add Items</h4>
+            <ul style="color: #0d47a1;">
                 <li>Fill in all required fields for your product/service</li>
                 <li>After filling values, press Enter or Tab to confirm inputs</li>
                 <li>Click the "Add" button to add the item to your estimate</li>
@@ -775,13 +867,13 @@ with main_container:
                     
                     st.markdown(f"""
                     <div class="calculation-display">
-                        <h4>📊 Calculation Preview</h4>
-                        <p><strong>Area:</strong> {calc_result['area']:.2f} {unit}</p>
-                        <p><strong>Amount:</strong> ₹{calc_result['amount']:,.2f}</p>
+                        <h4 style="color: #000000;">📊 Calculation Preview</h4>
+                        <p style="color: #000000;"><strong>Area:</strong> {calc_result['area']:.2f} {unit}</p>
+                        <p style="color: #000000;"><strong>Amount:</strong> ₹{calc_result['amount']:,.2f}</p>
                     </div>
                     """, unsafe_allow_html=True)
                     
-                    if st.button("➕ Add Area-based Item (Press Enter after filling fields)", type="primary"):
+                    if st.button("➕ Add Area-based Item", type="primary"):
                         item = EstimateItem(
                             name=f"{product_name} ({length}×{width} {unit})",
                             quantity=calc_result['area'],
@@ -794,14 +886,14 @@ with main_container:
                         st.session_state.estimate_items.append(item)
                         st.markdown(f"""
                         <div class="success-display">
-                            <h4>✅ Added {product_name} to estimate</h4>
+                            <h4 style="color: #0c5460;">✅ Added {product_name} to estimate</h4>
                         </div>
                         """, unsafe_allow_html=True)
                         
                 except ValueError as e:
                     st.markdown(f"""
                     <div class="error-display">
-                        <h4>⚠️ Error: {e}</h4>
+                        <h4 style="color: #721c24;">⚠️ Error: {e}</h4>
                     </div>
                     """, unsafe_allow_html=True)
         
@@ -820,12 +912,12 @@ with main_container:
                 amount = quantity * rate
                 st.markdown(f"""
                 <div class="calculation-display">
-                    <h4>📊 Calculation Preview</h4>
-                    <p><strong>Total Amount:</strong> ₹{amount:,.2f}</p>
+                    <h4 style="color: #000000;">📊 Calculation Preview</h4>
+                    <p style="color: #000000;"><strong>Total Amount:</strong> ₹{amount:,.2f}</p>
                 </div>
                 """, unsafe_allow_html=True)
                 
-                if st.button("➕ Add Quantity-based Item (Press Enter after filling fields)", type="primary"):
+                if st.button("➕ Add Quantity-based Item", type="primary"):
                     item = EstimateItem(
                         name=product_name,
                         quantity=quantity,
@@ -837,29 +929,29 @@ with main_container:
                     st.session_state.estimate_items.append(item)
                     st.markdown(f"""
                     <div class="success-display">
-                        <h4>✅ Added {product_name} to estimate</h4>
+                        <h4 style="color: #0c5460;">✅ Added {product_name} to estimate</h4>
                     </div>
                     """, unsafe_allow_html=True)
         
         elif product_type == "Aluminum Profile (with wastage calculation)":
             st.markdown("""
             <div class="instruction-box">
-                <h4>🔧 Aluminum Profile Calculator</h4>
-                <p>This calculates the exact aluminum profile needed for frame construction, including wastage analysis.</p>
-                <p><strong>Formula:</strong> Perimeter = 2 × (Height + Width) × Number of Shutters</p>
+                <h4 style="color: #0d47a1;">🔧 Aluminum Profile Calculator</h4>
+                <p style="color: #0d47a1;">This calculates the exact aluminum profile needed for frame construction, including wastage analysis.</p>
+                <p style="color: #0d47a1;"><strong>Formula:</strong> Perimeter = 2 × (Height + Width) × Number of Shutters</p>
             </div>
             """, unsafe_allow_html=True)
             
             col1, col2 = st.columns(2)
             
             with col1:
-                st.subheader("Shutter Specifications")
+                st.markdown('<h4 style="color: #000000;">Shutter Specifications</h4>', unsafe_allow_html=True)
                 shutter_height = st.number_input("Shutter Height (ft)", min_value=0.0, step=0.1, format="%.2f", key="profile_height")
                 shutter_width = st.number_input("Shutter Width (ft)", min_value=0.0, step=0.1, format="%.2f", key="profile_width")
                 num_shutters = st.number_input("Number of Shutters", min_value=1, step=1, key="profile_shutters")
                 
             with col2:
-                st.subheader("Profile Specifications")
+                st.markdown('<h4 style="color: #000000;">Profile Specifications</h4>', unsafe_allow_html=True)
                 stock_length = st.number_input("Stock Length per stick (ft)", value=19.5, step=0.1, format="%.2f", key="profile_stock")
                 profile_rate = st.number_input("Rate per ft (₹)", min_value=0.0, step=0.01, format="%.2f", key="profile_rate")
             
@@ -890,14 +982,14 @@ with main_container:
                     except ValueError as e:
                         st.markdown(f"""
                         <div class="error-display">
-                            <h4>⚠️ Error: {e}</h4>
+                            <h4 style="color: #721c24;">⚠️ Error: {e}</h4>
                         </div>
                         """, unsafe_allow_html=True)
                         st.session_state.profile_calculation = None
                 else:
                     st.markdown("""
                     <div class="warning-display">
-                        <h4>⚠️ Please enter valid values for all fields</h4>
+                        <h4 style="color: #856404;">⚠️ Please enter valid values for all fields</h4>
                     </div>
                     """, unsafe_allow_html=True)
                     st.session_state.profile_calculation = None
@@ -907,32 +999,32 @@ with main_container:
                 calc_data = st.session_state.profile_calculation
                 wastage = calc_data['wastage']
                 
-                st.markdown("#### 📊 Calculation Results")
+                st.markdown('<h4 style="color: #000000;">📊 Calculation Results</h4>', unsafe_allow_html=True)
                 
                 col1, col2, col3 = st.columns(3)
                 
                 with col1:
                     st.markdown(f"""
                     <div class="metric-display">
-                        <h4>📏 Required Length</h4>
-                        <h3>{wastage.total_required_length:.2f} ft</h3>
+                        <h4 style="color: #000000;">📏 Required Length</h4>
+                        <h3 style="color: #000000;">{wastage.total_required_length:.2f} ft</h3>
                     </div>
                     """, unsafe_allow_html=True)
                     
                 with col2:
                     st.markdown(f"""
                     <div class="metric-display">
-                        <h4>📦 Sticks Needed</h4>
-                        <h3>{wastage.sticks_needed} pieces</h3>
+                        <h4 style="color: #000000;">📦 Sticks Needed</h4>
+                        <h3 style="color: #000000;">{wastage.sticks_needed} pieces</h3>
                     </div>
                     """, unsafe_allow_html=True)
                     
                 with col3:
                     st.markdown(f"""
                     <div class="metric-display">
-                        <h4>⚠️ Wastage</h4>
-                        <h3>{wastage.wastage_percentage:.1f}%</h3>
-                        <p>{wastage.wastage_length:.2f} ft</p>
+                        <h4 style="color: #000000;">⚠️ Wastage</h4>
+                        <h3 style="color: #000000;">{wastage.wastage_percentage:.1f}%</h3>
+                        <p style="color: #000000;">{wastage.wastage_length:.2f} ft</p>
                     </div>
                     """, unsafe_allow_html=True)
                 
@@ -940,14 +1032,14 @@ with main_container:
                 if calc_data['profile_rate'] > 0:
                     st.markdown(f"""
                     <div class="calculation-display">
-                        <h4>💰 Cost Breakdown</h4>
-                        <p><strong>Total Material Cost:</strong> ₹{wastage.cost_breakdown['material_cost']:,.2f}</p>
-                        <p><strong>Useful Material Cost:</strong> ₹{wastage.cost_breakdown['useful_cost']:,.2f}</p>
-                        <p><strong>Wastage Cost:</strong> ₹{wastage.cost_breakdown['wastage_cost']:,.2f}</p>
+                        <h4 style="color: #000000;">💰 Cost Breakdown</h4>
+                        <p style="color: #000000;"><strong>Total Material Cost:</strong> ₹{wastage.cost_breakdown['material_cost']:,.2f}</p>
+                        <p style="color: #000000;"><strong>Useful Material Cost:</strong> ₹{wastage.cost_breakdown['useful_cost']:,.2f}</p>
+                        <p style="color: #000000;"><strong>Wastage Cost:</strong> ₹{wastage.cost_breakdown['wastage_cost']:,.2f}</p>
                     </div>
                     """, unsafe_allow_html=True)
                 
-                # Add to estimate button (now outside the calculation logic)
+                # Add to estimate button
                 col1, col2 = st.columns(2)
                 with col1:
                     if st.button("➕ Add Profile to Estimate", type="secondary", key="add_profile"):
@@ -963,7 +1055,7 @@ with main_container:
                         st.session_state.estimate_items.append(item)
                         st.markdown("""
                         <div class="success-display">
-                            <h4>✅ Added aluminum profile with wastage calculation to estimate</h4>
+                            <h4 style="color: #0c5460;">✅ Added aluminum profile with wastage calculation to estimate</h4>
                         </div>
                         """, unsafe_allow_html=True)
                         # Clear the calculation after adding
@@ -983,7 +1075,7 @@ with main_container:
                 service_amount = st.number_input("Amount (₹)", min_value=0.0, step=0.01, format="%.2f")
                 
             if service_amount > 0:
-                if st.button("➕ Add Service (Press Enter after filling fields)", type="primary"):
+                if st.button("➕ Add Service", type="primary"):
                     item = EstimateItem(
                         name=service_name,
                         quantity=1,
@@ -995,13 +1087,13 @@ with main_container:
                     st.session_state.estimate_items.append(item)
                     st.markdown(f"""
                     <div class="success-display">
-                        <h4>✅ Added {service_name} to estimate</h4>
+                        <h4 style="color: #0c5460;">✅ Added {service_name} to estimate</h4>
                     </div>
                     """, unsafe_allow_html=True)
         
         # Current items display
         if st.session_state.estimate_items:
-            st.markdown("### 📝 Current Items")
+            st.markdown('<h3 style="color: #000000 !important;">📝 Current Items</h3>', unsafe_allow_html=True)
             
             items_df = pd.DataFrame([
                 {
@@ -1037,32 +1129,32 @@ with main_container:
 
     elif page == "Final Estimate":
         st.markdown('<div class="section-card">', unsafe_allow_html=True)
-        st.markdown("## 📊 Final Estimate Summary")
+        st.markdown('<h2 style="color: #000000 !important;">📊 Final Estimate Summary</h2>', unsafe_allow_html=True)
         
         if not st.session_state.estimate_items:
             st.markdown("""
             <div class="warning-display">
-                <h4>⚠️ No items in estimate</h4>
-                <p>Please add products or services before generating the final estimate.</p>
+                <h4 style="color: #856404;">⚠️ No items in estimate</h4>
+                <p style="color: #856404;">Please add products or services before generating the final estimate.</p>
             </div>
             """, unsafe_allow_html=True)
             st.stop()
         
-        # Client info display - Fixed visibility issue
+        # Client info display
         client_details = st.session_state.client_details
         st.markdown(f"""
         <div class="client-info-display">
-            <h3>👤 Client Information</h3>
-            <p><strong>Name:</strong> {client_details['client_name']}</p>
-            <p><strong>Phone:</strong> {client_details['client_phone']}</p>
-            <p><strong>Address:</strong> {client_details['client_address']}</p>
-            <p><strong>Estimate No:</strong> {client_details['estimate_no']}</p>
-            <p><strong>Date:</strong> {client_details['estimate_date']}</p>
+            <h3 style="color: #000000;">👤 Client Information</h3>
+            <p style="color: #000000;"><strong>Name:</strong> {client_details['client_name']}</p>
+            <p style="color: #000000;"><strong>Phone:</strong> {client_details['client_phone']}</p>
+            <p style="color: #000000;"><strong>Address:</strong> {client_details['client_address']}</p>
+            <p style="color: #000000;"><strong>Estimate No:</strong> {client_details['estimate_no']}</p>
+            <p style="color: #000000;"><strong>Date:</strong> {client_details['estimate_date']}</p>
         </div>
         """, unsafe_allow_html=True)
         
         # Items breakdown
-        st.markdown("### 📝 Items Breakdown")
+        st.markdown('<h3 style="color: #000000 !important;">📝 Items Breakdown</h3>', unsafe_allow_html=True)
         
         items_df = pd.DataFrame([
             {
@@ -1085,7 +1177,7 @@ with main_container:
         col1, col2 = st.columns(2)
         
         with col1:
-            st.markdown("### 💰 Adjustments")
+            st.markdown('<h3 style="color: #000000 !important;">💰 Adjustments</h3>', unsafe_allow_html=True)
             
             discount = st.number_input("Discount Amount (₹)", min_value=0.0, step=0.01, format="%.2f")
             discount_percent = st.number_input("Or Discount %", min_value=0.0, max_value=100.0, step=0.1, format="%.1f")
@@ -1098,31 +1190,30 @@ with main_container:
             additional_label = st.text_input("Additional charges label", value="Transport/Misc")
             
         with col2:
-            st.markdown("### 📊 Summary")
+            st.markdown('<h3 style="color: #000000 !important;">📊 Summary</h3>', unsafe_allow_html=True)
             
-            # Fixed: Properly display summary information
             st.markdown(f"""
             <div class="summary-card">
-                <h4>💰 Financial Summary</h4>
-                <p><strong>Subtotal:</strong> ₹{subtotal:,.2f}</p>
-                <p><strong>Discount:</strong> -₹{discount:,.2f}</p>
-                <p><strong>{additional_label}:</strong> +₹{additional_charges:,.2f}</p>
+                <h4 style="color: #000000;">💰 Financial Summary</h4>
+                <p style="color: #000000;"><strong>Subtotal:</strong> ₹{subtotal:,.2f}</p>
+                <p style="color: #000000;"><strong>Discount:</strong> -₹{discount:,.2f}</p>
+                <p style="color: #000000;"><strong>{additional_label}:</strong> +₹{additional_charges:,.2f}</p>
                 <hr>
-                <p><strong>Final Total:</strong> ₹{subtotal - discount + additional_charges:,.2f}</p>
+                <p style="color: #000000;"><strong>Final Total:</strong> ₹{subtotal - discount + additional_charges:,.2f}</p>
             </div>
             """, unsafe_allow_html=True)
         
-        # Fixed: Calculate final total correctly
+        # Calculate final total correctly
         final_total = subtotal - discount + additional_charges
         
         st.markdown(f"""
         <div class="total-display">
-            <h1 style="margin: 0;">Final Total: ₹{final_total:,.2f}</h1>
-            <p style="margin: 0.5rem 0 0 0; opacity: 0.9;">All amounts in Indian Rupees (INR)</p>
+            <h1 style="margin: 0; color: #ffffff;">Final Total: ₹{final_total:,.2f}</h1>
+            <p style="margin: 0.5rem 0 0 0; opacity: 0.9; color: #ffffff;">All amounts in Indian Rupees (INR)</p>
         </div>
         """, unsafe_allow_html=True)
         
-        # Save to session state - Fixed
+        # Save to session state
         st.session_state.update({
             'subtotal': subtotal,
             'discount': discount,
@@ -1136,18 +1227,18 @@ with main_container:
 
     elif page == "Export & Email":
         st.markdown('<div class="section-card">', unsafe_allow_html=True)
-        st.markdown("## 📄 Export & Email Options")
+        st.markdown('<h2 style="color: #000000 !important;">📄 Export & Email Options</h2>', unsafe_allow_html=True)
         
         if not st.session_state.estimate_items:
             st.markdown("""
             <div class="warning-display">
-                <h4>⚠️ No estimate to export</h4>
-                <p>Please create an estimate first.</p>
+                <h4 style="color: #856404;">⚠️ No estimate to export</h4>
+                <p style="color: #856404;">Please create an estimate first.</p>
             </div>
             """, unsafe_allow_html=True)
             st.stop()
         
-        # Fixed: Ensure final_total is calculated correctly
+        # Calculate final_total correctly
         subtotal = st.session_state.get('subtotal', sum(item.amount for item in st.session_state.estimate_items))
         discount = st.session_state.get('discount', 0)
         additional_charges = st.session_state.get('additional_charges', 0)
@@ -1178,12 +1269,12 @@ with main_container:
         }
         
         # Email functionality
-        st.markdown("### 📧 Send Email to Client")
+        st.markdown('<h3 style="color: #000000 !important;">📧 Send Email to Client</h3>', unsafe_allow_html=True)
         
         st.markdown("""
         <div class="instruction-box">
-            <h4>📧 Email Instructions</h4>
-            <p>Enter the client's email address and click send. The complete estimate will be sent as a Word document attachment.</p>
+            <h4 style="color: #0d47a1;">📧 Email Instructions</h4>
+            <p style="color: #0d47a1;">Enter the client's email address and click send. The complete estimate will be sent as a Word document attachment.</p>
         </div>
         """, unsafe_allow_html=True)
         
@@ -1205,24 +1296,24 @@ with main_container:
                 if success:
                     st.markdown(f"""
                     <div class="success-display">
-                        <h4>✅ Email Sent Successfully!</h4>
-                        <p>Estimate has been sent to {client_email}</p>
-                        <p>The client will receive a Word document with the complete estimate.</p>
+                        <h4 style="color: #0c5460;">✅ Email Sent Successfully!</h4>
+                        <p style="color: #0c5460;">Estimate has been sent to {client_email}</p>
+                        <p style="color: #0c5460;">The client will receive a Word document with the complete estimate.</p>
                     </div>
                     """, unsafe_allow_html=True)
                 else:
                     st.markdown(f"""
                     <div class="error-display">
-                        <h4>❌ Email Failed</h4>
-                        <p>{message}</p>
-                        <p>Please check the email address and try again.</p>
+                        <h4 style="color: #721c24;">❌ Email Failed</h4>
+                        <p style="color: #721c24;">{message}</p>
+                        <p style="color: #721c24;">Please check the email address and try again.</p>
                     </div>
                     """, unsafe_allow_html=True)
         
         st.markdown("---")
         
         # Export options
-        st.markdown("### 📤 Download Options")
+        st.markdown('<h3 style="color: #000000 !important;">📤 Download Options</h3>', unsafe_allow_html=True)
         
         col1, col2, col3 = st.columns(3)
         
@@ -1246,14 +1337,14 @@ with main_container:
                     
                     st.markdown("""
                     <div class="success-display">
-                        <h4>✅ Word document ready for download!</h4>
+                        <h4 style="color: #0c5460;">✅ Word document ready for download!</h4>
                     </div>
                     """, unsafe_allow_html=True)
                     
                 except Exception as e:
                     st.markdown(f"""
                     <div class="error-display">
-                        <h4>❌ Error creating document: {e}</h4>
+                        <h4 style="color: #721c24;">❌ Error creating document: {e}</h4>
                     </div>
                     """, unsafe_allow_html=True)
         
@@ -1313,9 +1404,9 @@ Subtotal: ₹{estimate_data['subtotal']:,.2f}"""
 # Footer
 st.markdown("---")
 st.markdown("""
-<div style="text-align: center; color: #7f8c8d; margin: 2rem 0; padding: 1rem; background: #ecf0f1; border-radius: 6px;">
-    <h4 style="margin: 0; color: #2c3e50;">🏗️ Aluminum Profile Estimate Generator</h4>
-    <p style="margin: 0.5rem 0; color: #2c3e50;">Professional Estimates | Accurate Calculations | Email Integration</p>
-    <p style="margin: 0; font-size: 0.9em; color: #7f8c8d;">Built with Streamlit | Version 2.1 Professional</p>
+<div class="footer-style">
+    <h4>🏗️ Aluminum Profile Estimate Generator</h4>
+    <p>Professional Estimates | Accurate Calculations | Email Integration</p>
+    <p style="font-size: 0.9em; color: #7f8c8d;">Built with Streamlit | Version 2.1 Professional</p>
 </div>
 """, unsafe_allow_html=True)
